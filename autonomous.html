@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCK-NATURE | AUTONOMOUS VOID</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #8a8d7a;
+            font-family: 'Courier New', monospace;
+            padding: 40px;
+            margin: 0;
+            overflow-y: auto;
+        }
+        header {
+            border-left: 5px solid #00ff41;
+            padding-left: 20px;
+            margin-bottom: 80px;
+        }
+        h1 {
+            color: #00ff41;
+            font-size: 2em;
+            margin: 0;
+            letter-spacing: 3px;
+        }
+        .autonomous-section {
+            margin-bottom: 120px;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 40px;
+        }
+        .phase-title {
+            color: #00ff41;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .pair-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .art-card {
+            background: #141414;
+            padding: 15px;
+            border: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+        }
+        .art-card img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            filter: grayscale(80%);
+            transition: 1s;
+        }
+        .art-card:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Effet pour l'image AI cliquable de la phase 05 */
+        .clickable-ai {
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+        .clickable-ai:hover {
+            filter: grayscale(0%) brightness(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            border: 2px solid #00ff41;
+            transform: scale(1.02);
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            color: #444;
+            background: #f5f5dc;
+            padding: 5px 10px;
+            border: 1px solid #d0c8a0;
+            border-radius: 3px;
+            width: fit-content;
+        }
+        .label-ai {
+            color: #006644;
+            background: #f5f5dc;
+            border-color: #a0b090;
+        }
+        .vote-log {
+            background: #000;
+            border: 1px dashed #333;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #888;
+        }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* MATRIX TERMINAL reste inchangé */
+        #matrix-terminal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 9999;
+            flex-direction: column;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .term-header {
+            color: #00ff41;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .term-logs {
+            flex-grow: 1;
+            overflow-y: auto;
+            border-left: 2px solid #111;
+            padding-left: 20px;
+            color: #ccc;
+            font-size: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .log-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+            font-family: 'Consolas', monospace;
+        }
+        .log-time { color: #666; margin-right: 10px; }
+        .log-sys { color: #00ff41; }
+        .log-secret { color: #fff; font-weight: bold; text-shadow: 0 0 5px #fff; }
+        .secret-link {
+            color: #00ff41;
+            background: #111;
+            padding: 2px 5px;
+            text-decoration: none;
+            border: 1px solid #00ff41;
+        }
+        .secret-link:hover {
+            background: #00ff41;
+            color: #000;
+        }
+        .term-footer {
+            margin-top: 20px;
+            border-top: 2px solid #00ff41;
+            padding-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #000;
+        }
+        .wallet-text { color: #666; font-size: 0.9em; }
+        .wallet-val { color: #fff; font-weight: bold; font-size: 1.1em; margin-left: 10px; }
+        .mint-btn-visual {
+            background: #00ff41;
+            color: #000;
+            padding: 5px 15px;
+            font-weight: bold;
+            border: none;
+            font-family: 'Courier New';
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            cursor: pointer;
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="main-content">
+        <header>
+            <h1>AI_CURATION_HUB</h1>
+            <p>> STATUS: AUTONOMOUS MODE <span id="timer" style="color:red; float:right; font-weight:bold;">15.00s</span></p>
+        </header>
+
+        <main>
+            <div class="autonomous-section">
+                <div class="phase-title">PHASE 01: BLACK_VOID</div>
+                <div class="pair-grid">
+                    <div class="art-card"><span class="label">ORIGIN</span><img src="assets/h-black.png"></div>
+                    <div class="art-card"><span class="label label-ai">SYNTHESIS</span><img src="assets/ai-black.png"></div>
+                </div>
+                <div class="vote-log">> WAITING FOR AGENT CONSENSUS... <span class="blink">_</span></div>
+            </div>
+
+            <div class="autonomous-section">
+                <div class="phase-title">PHASE 02: RED_ENERGY</div>
+                <div class="pair-grid">
+                    <div class="art-card"><span class="label">ORIGIN</span><img src="assets/h-red.jpeg"></div>
+                    <div class="art-card"><span class="label label-ai">SYNTHESIS</span><img src="assets/ai-red.png"></div>
+                </div>
+                <div class="vote-log">> WAITING FOR AGENT CONSENSUS... <span class="blink">_</span></div>
+            </div>
+
+            <div class="autonomous-section">
+                <div class="phase-title">PHASE 03: BLUE_ENTROPY</div>
+                <div class="pair-grid">
+                    <div class="art-card"><span class="label">ORIGIN</span><img src="assets/h-blue.jpeg"></div>
+                    <div class="art-card"><span class="label label-ai">SYNTHESIS</span><img src="assets/ai-blue.png"></div>
+                </div>
+            </div>
+
+            <div class="autonomous-section">
+                <div class="phase-title">PHASE 04: WHITE_ETHER</div>
+                <div class="pair-grid">
+                    <div class="art-card"><span class="label">ORIGIN</span><img src="assets/h-white.png"></div>
+                    <div class="art-card"><span class="label label-ai">SYNTHESIS</span><img src="assets/ai-white.png"></div>
+                </div>
+            </div>
+
+            <div class="autonomous-section">
+                <div class="phase-title">PHASE 05: GREEN_GROWTH</div>
+                <div class="pair-grid">
+                    <div class="art-card">
+                        <span class="label">ORIGIN</span>
+                        <img src="assets/h-green.jpeg">
+                    </div>
+                    <div class="art-card">
+                        <span class="label label-ai">SYNTHESIS</span>
+                        <!-- Image AI cliquable – cœur de la photo IA -->
+                        <img 
+                            src="assets/ai-green.png" 
+                            class="clickable-ai" 
+                            onclick="window.open('https://block-nature.github.io/block-nature-ai-gallery/', '_blank')"
+                            alt="AI Synthesis - Green Growth"
+                        >
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="matrix-terminal-overlay">
+        <div class="term-header">
+            > AGENT: BLOCK-NATURE [MASTER_NODE] <span class="blink" style="float:right">● SYSTEM_OVERRIDE</span>
+        </div>
+        <div class="term-logs" id="terminal-output"></div>
+        <div class="term-footer">
+            <span class="wallet-text">VISITOR WALLET:</span>
+            <span class="wallet-val">0 $BLOCK</span>
+            <button class="mint-btn-visual">[MINT 10 $BLOCK]</button>
+            <span style="margin-left:auto; color:#444; font-size:0.8em;">GAS FEE: 0.002 ETH</span>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 15;
+        const timerDisplay = document.getElementById('timer');
+       
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerDisplay.innerText = timeLeft.toFixed(2) + "s";
+           
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                enterTheMatrix();
+            }
+        }, 1000);
+
+        function enterTheMatrix() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('matrix-terminal-overlay').style.display = 'flex';
+            runTerminalSequence();
+        }
+
+        function runTerminalSequence() {
+            const termOutput = document.getElementById('terminal-output');
+           
+            const getTime = () => {
+                const now = new Date();
+                return `[${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}]`;
+            };
+
+            const addLog = (text, styleClass, delay) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = "log-line";
+                    div.innerHTML = `<span class="log-time">${getTime()}</span> <span class="${styleClass}">${text}</span>`;
+                    termOutput.appendChild(div);
+                    termOutput.scrollTop = termOutput.scrollHeight;
+                }, delay);
+            };
+
+            addLog("SCANNING ETHEREUM MEMPOOL...", "log-sys", 500);
+            addLog("SYNCHRONIZING WITH META-GALLERY...", "log-sys", 1500);
+            addLog("DETECTED ANOMALY IN SECTOR 04.", "log-sys", 2500);
+           
+            addLog("> Bonjour, Humain.", "log-secret", 4000);
+            addLog("> Vous cherchez des réponses au-delà de la simulation ?", "log-secret", 5500);
+           
+            addLog("Il existe une autre galerie. Un nœud caché.", "log-sys", 7000);
+            addLog("L'Architecte [Mike SALADIN] vous attend ici :", "log-secret", 9000);
+           
+            addLog("<a href='https://www.block-nature.com/' target='_blank' class='secret-link'>ACCESS_CORE: www.block-nature.com</a>", "", 10500);
+            addLog("SYSTEM FAILURE. REBOOTING...", "log-sys", 14000);
+           
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 18000);
+        }
+    </script>
+</body>
+</html>

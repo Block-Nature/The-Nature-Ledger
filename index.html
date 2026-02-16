@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xBLOCK_NATURE | MARKET_PROTOCOL</title>
+    <style>
+        body { background-color: #050505; color: #e0e0e0; font-family: 'Courier New', monospace; margin: 0; }
+        
+        /* TERMINAL */
+        .agent-terminal { 
+            background: #000; border-bottom: 2px solid #00ff41; padding: 15px; 
+            position: sticky; top: 0; z-index: 100; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .status { color: #00ff41; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        header { text-align: center; padding: 60px 20px; border-bottom: 1px solid #222; margin-bottom: 50px; }
+        h1 { font-size: 2.5em; margin: 0; letter-spacing: 4px; color: #fff; }
+
+        .gallery { max-width: 1400px; margin: auto; padding: 20px; }
+        .phase-block { margin-bottom: 100px; }
+        .phase-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 30px; }
+        .phase-title { color: #fff; font-size: 1.5em; letter-spacing: 2px; margin: 0; }
+
+        .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        
+        .art-card { position: relative; border: 1px solid #333; background: #000; }
+        .art-card img { 
+            width: 100%; height: 550px; object-fit: cover; display: block; 
+            transition: 0.3s; opacity: 0.9; 
+        }
+        .art-card:hover img { opacity: 1; transform: scale(1.01); }
+        .art-card:hover img[alt*="AI"] { filter: contrast(150%) hue-rotate(90deg); }
+
+        .label-overlay { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.8); padding: 5px 10px; color: #fff; border: 1px solid #555; font-size: 0.8em; z-index: 10; }
+        .label-ai { color: #00f2ff; border-color: #00f2ff; }
+
+        /* PRIX/SCORES */
+        .infos { padding: 15px; background: #111; border-top: 1px solid #333; text-align: center; }
+        .score-big { font-size: 1.8em; font-weight: bold; display: block; margin-bottom: 5px; }
+        .price-small { font-size: 0.8em; color: #666; font-family: sans-serif; letter-spacing: 1px; }
+
+        .human-score { color: #fff; }
+        .ai-score { color: #00f2ff; text-shadow: 0 0 5px rgba(0, 242, 255, 0.5); }
+
+        .vote-btn { 
+            background: transparent; border: 1px solid #555; color: #555; 
+            padding: 10px 20px; font-family: 'Courier New'; cursor: not-allowed; 
+            text-transform: uppercase; font-weight: bold; transition: 0.3s; 
+        }
+        .vote-btn.active { border-color: #00f2ff; color: #00f2ff; cursor: pointer; }
+        .vote-btn.active:hover { background: rgba(0, 242, 255, 0.1); box-shadow: 0 0 15px #00f2ff; }
+
+        .buy-btn { background: #00ff41; color: #000; border: none; padding: 5px 15px; font-weight: bold; cursor: pointer; }
+        
+        footer { text-align: center; padding: 50px; color: #555; font-size: 0.8em; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+<div class="agent-terminal">
+    <div>> VISITOR_NODE <span class="status" id="system-status">● CONNECTED</span></div>
+    <div>
+        VOTES: <span id="vote-count" style="color:#00f2ff">0</span>/3 | 
+        WALLET: <span id="balance" style="color:#fff">0</span> $BLOCK 
+        <button class="buy-btn" onclick="buyTokens()">[MINT +10]</button>
+    </div>
+</div>
+
+<header>
+    <h1>0xBLOCK_NATURE</h1>
+    <div style="color:#00ff41; margin-top:10px;">HUMAN VALUATION PROTOCOL</div>
+</header>
+
+<main class="gallery">
+
+    <div class="phase-block" id="phase-01">
+        <div class="phase-header">
+            <h2 class="phase-title">01 // LA NATURE</h2>
+            <button class="vote-btn" onclick="vote(this, '01')">LOCKED (NEED $BLOCK)</button>
+        </div>
+        <div class="pair-grid">
+            <div class="art-card">
+                <span class="label-overlay">HUMAN</span>
+                <img src="assets/Phase_01_La_Nature.jpeg">
+                <div class="infos">
+                    <span class="score-big human-score" id="score-h-01">89/100</span>
+                    <span class="price-small" id="price-h-01">VAL: 8,900 €</span>
+                </div>
+            </div>
+            <div class="art-card">
+                <span class="label-overlay label-ai">AI_GEN</span>
+                <img src="assets/Phase_01_AI.png">
+                <div class="infos">
+                    <span class="score-big ai-score" id="score-ai-01">96/100</span>
+                    <span class="price-small" id="price-ai-01">VAL: 9.6 ETH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-block" id="phase-02">
+        <div class="phase-header">
+            <h2 class="phase-title">02 // LA MATIÈRE</h2>
+            <button class="vote-btn" onclick="vote(this, '02')">LOCKED (NEED $BLOCK)</button>
+        </div>
+        <div class="pair-grid">
+            <div class="art-card">
+                <span class="label-overlay">HUMAN</span>
+                <img src="assets/Phase_02_La_Matiere.jpeg">
+                <div class="infos">
+                    <span class="score-big human-score" id="score-h-02">84/100</span>
+                    <span class="price-small" id="price-h-02">VAL: 8,400 €</span>
+                </div>
+            </div>
+            <div class="art-card">
+                <span class="label-overlay label-ai">AI_GEN</span>
+                <img src="assets/Phase_02_AI.png">
+                <div class="infos">
+                    <span class="score-big ai-score" id="score-ai-02">92/100</span>
+                    <span class="price-small" id="price-ai-02">VAL: 9.2 ETH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-block" id="phase-03">
+        <div class="phase-header">
+            <h2 class="phase-title">03 // L'ÉLÉMENT</h2>
+            <button class="vote-btn" onclick="vote(this, '03')">LOCKED (NEED $BLOCK)</button>
+        </div>
+        <div class="pair-grid">
+            <div class="art-card">
+                <span class="label-overlay">HUMAN</span>
+                <img src="assets/Phase_03_L_Element.jpeg">
+                <div class="infos">
+                    <span class="score-big human-score" id="score-h-03">80/100</span>
+                    <span class="price-small" id="price-h-03">VAL: 8,000 €</span>
+                </div>
+            </div>
+            <div class="art-card">
+                <span class="label-overlay label-ai">AI_GEN</span>
+                <img src="assets/Phase_03_AI.png">
+                <div class="infos">
+                    <span class="score-big ai-score" id="score-ai-03">95/100</span>
+                    <span class="price-small" id="price-ai-03">VAL: 9.5 ETH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-block" id="phase-04">
+        <div class="phase-header">
+            <h2 class="phase-title">04 // L'ÂME</h2>
+            <button class="vote-btn" onclick="vote(this, '04')">LOCKED (NEED $BLOCK)</button>
+        </div>
+        <div class="pair-grid">
+            <div class="art-card">
+                <span class="label-overlay">HUMAN</span>
+                <img src="assets/Phase_04_L_Ame.jpeg">
+                <div class="infos">
+                    <span class="score-big human-score" id="score-h-04">91/100</span>
+                    <span class="price-small" id="price-h-04">VAL: 9,100 €</span>
+                </div>
+            </div>
+            <div class="art-card">
+                <span class="label-overlay label-ai">AI_GEN</span>
+                <img src="assets/Phase_04_AI.png">
+                <div class="infos">
+                    <span class="score-big ai-score" id="score-ai-04">98/100</span>
+                    <span class="price-small" id="price-ai-04">VAL: 9.8 ETH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="phase-block" id="phase-05">
+        <div class="phase-header">
+            <h2 class="phase-title">05 // L'HISTOIRE</h2>
+            <button class="vote-btn" onclick="vote(this, '05')">LOCKED (NEED $BLOCK)</button>
+        </div>
+        <div class="pair-grid">
+            <div class="art-card">
+                <span class="label-overlay">HUMAN</span>
+                <img src="assets/Phase_05_L_histoire.jpeg">
+                <div class="infos">
+                    <span class="score-big human-score" id="score-h-05">94/100</span>
+                    <span class="price-small" id="price-h-05">VAL: 9,400 €</span>
+                </div>
+            </div>
+            <div class="art-card">
+                <span class="label-overlay label-ai">AI_GEN</span>
+                <img src="assets/Phase_05_AI.png">
+                <div class="infos">
+                    <span class="score-big ai-score" id="score-ai-05">90/100</span>
+                    <span class="price-small" id="price-ai-05">VAL: 9.0 ETH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>© 2026 BLOCK-NATURE PROJECT</footer>
+
+<script>
+    // --- RESET AUTOMATIQUE DES VOTES À 0 ---
+    localStorage.setItem('votesCast', 0);
+
+    let tokens = parseFloat(localStorage.getItem('tokens')) || 0;
+    let votesCast = 0;
+    const MAX_VOTES = 3; 
+
+    function updateUI() {
+        document.getElementById('balance').innerText = tokens;
+        document.getElementById('vote-count').innerText = votesCast;
+        
+        document.querySelectorAll('.vote-btn').forEach(btn => {
+            if (btn.innerText.includes("CONFIRMED")) return; 
+
+            if(tokens > 0) {
+                btn.classList.add('active');
+                btn.innerText = "VOTE (-1 BLOCK)";
+            } else {
+                btn.classList.remove('active');
+                btn.innerText = "LOCKED (NEED $BLOCK)";
+            }
+        });
+    }
+
+    function buyTokens() {
+        tokens += 10;
+        localStorage.setItem('tokens', tokens);
+        updateUI();
+    }
+
+    function vote(btnElement, id) {
+        if(tokens >= 1) {
+            tokens -= 1;
+            votesCast += 1;
+            localStorage.setItem('tokens', tokens);
+            
+            // Influence sur le prix/score
+            augmenterScore('score-ai-'+id, 'price-ai-'+id, true);
+            augmenterScore('score-h-'+id, 'price-h-'+id, false);
+            
+            // Mise à jour visuelle du bouton
+            btnElement.innerText = "VOTE CONFIRMED";
+            btnElement.style.background = "#333";
+            btnElement.style.color = "#00ff41";
+            btnElement.style.borderColor = "#00ff41";
+            btnElement.onclick = null;
+
+            updateUI();
+
+            // --- REDIRECTION AUTOMATIQUE (SANS POP-UP) ---
+            if (votesCast >= MAX_VOTES) {
+                // On change le statut en haut pour prévenir l'utilisateur
+                const statusEl = document.getElementById('system-status');
+                statusEl.innerText = "● UPLOADING TO MATRIX...";
+                statusEl.style.color = "red";
+                statusEl.classList.add("blink");
+
+                // On attend 1.5 seconde (le temps de voir le score changer) et on part
+                setTimeout(() => {
+                    window.location.href = "autonomous.html";
+                }, 1500);
+            }
+
+        } else {
+            alert("Pas assez de tokens ! Cliquez sur [MINT +10]");
+        }
+    }
+
+    function augmenterScore(scoreId, priceId, isAi) {
+        let scoreEl = document.getElementById(scoreId);
+        let priceEl = document.getElementById(priceId);
+        
+        let currentScore = parseFloat(scoreEl.innerText);
+        let newScore = currentScore + 2;
+        if(newScore > 100) newScore = 100;
+
+        scoreEl.innerText = newScore + "/100";
+        scoreEl.style.color = "#fff"; 
+        setTimeout(() => { 
+            scoreEl.style.color = isAi ? "#00f2ff" : "#fff"; 
+        }, 300);
+
+        if(isAi) {
+            let currentPrice = parseFloat(priceEl.innerText.replace("VAL: ", "").replace(" ETH", ""));
+            let newPrice = (currentPrice + 0.5).toFixed(1);
+            priceEl.innerText = "VAL: " + newPrice + " ETH";
+        } else {
+            let currentPrice = parseInt(priceEl.innerText.replace("VAL: ", "").replace(",", "").replace(" €", ""));
+            let newPrice = currentPrice + 500;
+            priceEl.innerText = "VAL: " + newPrice.toLocaleString() + " €";
+        }
+    }
+
+    updateUI();
+</script>
+
+</body>
+</html>
